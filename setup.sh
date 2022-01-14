@@ -19,7 +19,7 @@ function print_usage
     echo "Optional argument:"
     echo " [CORRY_DIR]: the host corryvreckan repository folder"
     echo " If no [CORRY_DIR] is given, the corryvreckan source code "
-    echo " will be downloaded at `${HOME}/repos/corryvreckan`"
+    echo " will be downloaded at `${HOME}/repositories/corryvreckan`"
     echo 
     echo "Usage:"
     echo "source setup.sh <ANALYSIS_DIR> [CORRY_DIR]"
@@ -61,7 +61,7 @@ DOCKERDIR=${PWD}
 ### 4. Download the code if needed:
 if [ "X" == "X${CORRY_REPO}" ];
 then
-    CORRY_REPO=${HOME}/repos/corryvreckan
+    CORRY_REPO=${HOME}/repositories/corryvreckan
     mkdir -p ${CORRY_REPO} && cd ${CORRY_REPO}/.. ;
     if [ "X$(command -v git)" == "X" ];
     then
@@ -74,7 +74,7 @@ then
         git clone https://gitlab.cern.ch/corryvreckan/corryvreckan.git corryvreckan
         echo "[WARNING] Corryvreckan in `master` branch"
     fi
-else if [ ! -d ${CORRY_REPO} ];
+elif [ ! -d ${CORRY_REPO} ];
 then
     echo "Directory not found: ${CORRY_REPO}"
     return -5
@@ -89,7 +89,7 @@ do
     finalf=$(echo ${dc}|sed "s/.templ-//g")
     cp $dc $finalf
     sed -i "s#@CODEDIR_CORRY#${CORRY_REPO}#g" $finalf
-    sed -i "s#@ANADIR#${}#g" ${ANADIR}
+    sed -i "s#@ANADIR#${ANADIR}#g" $finalf
 done
 
 # 4. Create a .setupdone file with some info about the
