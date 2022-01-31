@@ -8,16 +8,16 @@ analysis framework with the EUDAQ (v1) event reader support.
 ```bash 
 $ git clone https://github.com/duartej/dockerfiles-corryvreckan.git
 $ cd dockerfiles-corryvreckan
-$ source setup.sh ${ANALISYS_DIR} [${CORRY_REPO}]
+$ source setup.sh ${ANALISYS_DIR} ${DATA_ANALYSIS_DIR} [${CORRY_REPO}]
 ```
 The ```setup.sh``` creates a ```docker-compose.yml``` and 
 ```docker-compose.override.yml``` files which they can be used with the
 [docker-compose](https://docs.docker.com/compose) utility. Those files
 will provide several useful services, including the service to build the 
-image. The `ANALYSIS\_DIR` is referring to a folder in the host shared 
-with the container, and `CORRY\_REPO` to the local repository of `corryvreckan`.
+image. The `ANALYSIS_DIR` and `DATA_ANALYSIS_DIR` are referring to two folders in the host shared 
+with the container, and `CORRY_REPO` to the local repository of `corryvreckan`.
 If not is provided, the script will try to clone it from the remote repository
-in the host ```$HOME/repos/corryvreckan``` folder.
+in the host ```$HOME/repositories/corryvreckan``` folder.
 
 2. Download the automated build from the dockerhub: 
 ```bash
@@ -36,8 +36,9 @@ $ docker-compose build corryvreckan
 The `setup.sh` file will have created several services: 
  * `corryvreckan`: to build the image
  * `analysis`: the container provides a bash script where the `corry` executable is
-               ready to be used. Note the `/data` folder is intended to be used as 
-               working directory, and it is shared with the host computer
+               ready to be used. Note the `/testbeam` folder is intended to be used as 
+	       working directory, as well as, the `/data` folder is intended to be used 
+	       as data storage. They are shared with the host computer.
  * `devcode`:  as the `analysis` service, but the corryvreckan framework is mounted
                from the host (see ${CORRY_REPO}). Useful for code development. [override]
  * `compile`:  to compile the local repository. [override]
