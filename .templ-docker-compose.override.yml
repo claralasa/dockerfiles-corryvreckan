@@ -9,7 +9,10 @@ services:
               source: @CODEDIR_CORRY
               target: /analysis/corryvreckan
             - type: bind
-              source: @ANADIR
+              source: @DATAANADIR
               target: /data
+            - type: bind
+              source: @ANADIR
+              target: /testbeam
         environment:
             - DISPLAY=unix${DISPLAY}

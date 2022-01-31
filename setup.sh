@@ -14,15 +14,17 @@ function print_usage
     echo "Creates `docker-compose.yml|docker-compose.override.yml` files"
     echo "with some useful services."
     echo "Mandatory argument:"
+    echo " <DATA_ANALYSIS_DIR>: the host data analysis folder which corresponds"
+    echo "                 	to the `/data` folder in the container"
     echo " <ANALYSIS_DIR>: the host analysis folder which corresponds"
-    echo "                 to the `/data` folder in the container"
+    echo "                 to the `/testbeam` folder in the container"
     echo "Optional argument:"
     echo " [CORRY_DIR]: the host corryvreckan repository folder"
     echo " If no [CORRY_DIR] is given, the corryvreckan source code "
     echo " will be downloaded at `${HOME}/repositories/corryvreckan`"
     echo 
     echo "Usage:"
-    echo "source setup.sh <ANALYSIS_DIR> [CORRY_DIR]"
+    echo "source setup.sh <ANALYSIS_DIR> <DATA_ANALYSIS_DIR> [CORRY_DIR]"
     echo
 }
 
@@ -37,9 +39,10 @@ then
 fi
 
 ANADIR=$1
+DATAANADIR=$2
 
 # Get the corry repository (if any)
-CORRY_REPO=$2
+CORRY_REPO=$3
 
 # 1. Check it is running as regular user
 if [ "${EUID}" -eq 0 ];
@@ -90,6 +93,7 @@ do
     cp $dc $finalf
     sed -i "s#@CODEDIR_CORRY#${CORRY_REPO}#g" $finalf
     sed -i "s#@ANADIR#${ANADIR}#g" $finalf
+    sed -i "s#@DATAANADIR#${DATAANADIR}#g" $finalf
 done
 
 # 4. Create a .setupdone file with some info about the
@@ -98,9 +102,10 @@ cat << EOF > .setupdone
 Corryvreckan (EUDAQ 1) docker image and services
 ------------------------------------------------
 Last setup performed at $(date)
-dockerfiles-corryvreckan CONTEX DIR: $(realpath $1)
+dockerfiles-corryvreckan CONTEX DIR: $(realpath $2)
 CORRYVRECKAN LOCAL SOURCE CODE     : ${CORRY_REPO}
-ANALYSIS LOCAL fOLDER              : ${ANADIR}
+ANALYSIS LOCAL FOLDER              : ${ANADIR}
+DATA ANALYSIS LOCAL FOLDER         : ${DATAANADIR}
 EOF
 cat .setupdone
 
